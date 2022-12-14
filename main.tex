@@ -1,0 +1,525 @@
+\documentclass[10.5pt, a4paper]{article}
+
+% --------设置中文使用工具-------------
+\usepackage[UTF8]{ctex} % 使用中文工具
+% \setCJKmainfont{<font.ttf>} % 设置默认的字体，宋体、黑体、楷体、微软雅黑需要自己上传有关字体文件
+
+%  -------页边距，需要放在fancyhdr前面来确定-----------
+\usepackage{geometry} % 调整页边距宏包
+\hoffset -0.5cm % 页面box的上边距，默认是一个inch(2.5cm)+\voffset
+\voffset -0.5cm % 页面box的上边距，默认是一个inch+\voffset
+% \topmargin 12pt % 页面box与页眉之间的高度，默认17pt
+% \headheight 25pt % 页眉高度，默认12pt
+\headsep 1.5em % 页眉和内容之间的距离，默认25pt
+\textheight 700pt % 页面内容的高度，默认561pt
+\textwidth 450pt % 页面内容的宽度，默认355pt
+% \footskip 20pt % 页面内容和页脚之间的距离，默认12pt
+
+%  -------页眉页脚设置-----------
+\usepackage{fancyhdr} % 页面风格设置的宏包，可以设置页眉或页脚格式
+\pagestyle{fancy} % 使页面为fancy风格
+\fancyhead[L]{姓名 学号} % 左页眉
+\fancyhead[C]{课程名称}% 居中页眉
+\fancyhead[R]{\today} % 左页眉
+
+% --------插入图片----------
+\usepackage{graphicx} % 插入图片的宏包，下面是实例
+% --------单张图片居中-----------
+% \begin{figure}[h] % h为当前位置，!htb为忽略美学标准，htbp为浮动图形
+% \centering % 图片居中
+% \includegraphics[width=0.55\textwidth]{images/1_original_image.png} % 插入图片，[]中设置图片大小，{}中是图片文件名
+% \caption{原始图片} % 最终文档中希望显示的图片标题
+% \label{Fig.1} % 用于文内引用的标签
+% \end{figure}
+% ---------多张图片排版----------
+\usepackage{subfigure} % 插入多个图片的宏包
+% \begin{figure}[h]
+% \centering  % 图片全局居中
+% \subfigure[图像模糊结果]{
+% \label{Fig.2.a}
+% \includegraphics[width=0.45\textwidth]{images/1.1_blurred_image.png}
+% }
+% \subfigure[图像模糊及加噪结果（降噪部分输入图片）]{
+% \label{Fig.2.b}
+% \includegraphics[width=0.45\textwidth]{images/2_blurred_noisy_image.png}
+% }
+% \caption{图像模糊、加噪结果}
+% \label{Fig.2}
+% \end{figure}
+
+% --------插入表格-------------
+\usepackage{booktabs} % 插入三线表所需的宏包
+\usepackage{makecell} % 实现表格居中宏包
+\usepackage{threeparttable}    % 用于添加注释
+% --------实例----------------
+% \begin{table}[h] % h为当前位置
+%     % \setlength{\abovecaptionskip}{0cm} % 表标题上方间距
+%     \setlength{\belowcaptionskip}{10pt} % 表标题下方间距
+%     \caption{常见的图像去模糊方式及对比} % 标题位置
+%     \centering % 表格整体居中
+%     % tabular表示三线表，l\c\r表示单元格水平居中对齐，p{}m{}b{}表示单元格垂直居中对齐，中间可以插入分割线。
+%     % 单元格要限制宽度，用p{宽度}表示，但此时左上对齐；
+%     % 采用m{2cm}<{\centering}指令实现垂直居中、水平居中且自动换行
+%     % 单元格对齐方式可采用\makecell[c]{内容}来表示
+%         % [c]是水平居中，[l]水平左居中，[r]水平右居中；
+%         % *[c]水平 + 垂直居中，*[l]垂直居中 + 水平左居中，*[r]垂直居中 + 水平右居中
+%         % 内容\\换行可以直接换行
+%     % \toprule[1pt]可以修改三线表的磅数
+%     % \resizebox{\linewidth}{!}{ % 自适应长度，\linewidth表示文章宽度
+%     \begin{tabular}{m{70pt}<{\centering}m{150pt}m{150pt}}
+%         \toprule[1.0pt]
+%         去模糊方式 & \makecell[c]{原理} & \makecell[c]{特点} \\
+%         \midrule[1.0pt]
+%         逆滤波 & 用退化函数除退化图像的傅里叶变换来计算原始图像的傅里叶变换估计 & 复原过程简单，但受到噪声影响很大 \\
+%         \midrule
+%         维纳滤波 & 一种最小二乘滤波方法，利用平稳随机过程的相关特性和频谱特性对混有噪声的信号进行滤波 & 可应用于连续、离散、标量、向量的各种场景且效果较好，但只能处理平稳过程，同时需要提供一定的噪声信息 \\
+%         \midrule
+%         正则化滤波 & 使用正则化对图像进行反卷积，进行有约束的去模糊处理 &当知道附加噪声的部分信息时，使用约束去卷积实现图像恢复比较有效 \\
+%         \midrule
+%         Lucy-Richardson滤波 & 假设噪声服从泊松分布，该算法优化PSF相关的模糊信息 & 对PSF模糊信息了解较多时，但对图像中噪声信息了解较少时，此方法较为有效 \\
+%         \bottomrule[1.0pt]
+%     \end{tabular}
+%     % }
+%     \label{Table.1}
+% \end{table}
+\usepackage{float} % 使用H位置时必须要导入
+\usepackage{enumerate} % 使用列表必须要导入的包
+% \usepackage{appendix} % 使用附录必须导入的包
+\usepackage{listings} % 插入代码的宏包
+\usepackage{xcolor} % 颜色相关宏包，并定义颜色
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+\lstset { % C++代码配置，
+% 格式调整参考https://ldzhangyx.github.io/2021/03/25/latex-code/
+% https://www.overleaf.com/learn/latex/Code_listing#Options_to_customize_code_listing_styles
+    language=C++,
+    frame=single, % 框线tb表示上下方,参考
+    tabsize=4, 
+    showstringspaces=false, % 不显示空格
+    numbers=left, % 数字位置
+    breaklines=true, % 自动换行
+    %upquote=true,
+    commentstyle=\color{commentgreen},
+    keywordstyle=\color{eminence},
+    stringstyle=\color{red},
+    basicstyle=\small\ttfamily, % basic font setting
+    emph={int,char,double,float,unsigned,void,bool},
+    emphstyle={\color{blue}},
+    escapechar={\&, \$},
+    % keyword highlighting
+    classoffset=1, % starting new class
+    otherkeywords={>,<,.,;,-,!,=,~},
+    morekeywords={>,<,.,;,-,!,=,~},
+    keywordstyle=\color{weborange},
+    classoffset=0,
+} 
+% \usepackage[framed,numbered,autolinebreaks,useliterate]{mcode} % matlab代码插入
+
+% ---------实现链接跳转--------------
+% \usepackage[backref]{hyperref} % 方块形状的超链接
+% 格式参考：https://www.overleaf.com/learn/latex/Hyperlinks#Styles_and_colours
+\usepackage{hyperref} % 宏包
+\hypersetup{
+    hypertex=true,
+    colorlinks=true,
+    linkcolor=blue,
+    anchorcolor=blue,
+    % citecolor=blue
+}  % 对应设置
+
+% ---------文献引用-----------------
+% 参考https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex
+\usepackage{cite} % 用于引用的宏包
+
+
+\begin{document}
+{\centering\section*{\LARGE{三维重建作业}}} % 不编进序号的标题
+\section{三维重建方法}
+双目立体视觉的三维重建过程分为几个步骤：双目相机标定、立体矫正、立体匹配、获取深度图。由于网站\url{https://vision.middlebury.edu/stereo/data/}上给出的数据已经完成立体矫正，因此主要部分是双目的立体匹配。常见的双目立体匹配算法有三种：BM、SGBM\cite{sgbm}、GC\cite{gc}，经典的几种算法的区别如下：
+\begin{enumerate}[(1)]
+\item BM：块匹配（Block Matching）算法，由于是局部匹配速度很快，但精度较低，得到的视差图效果较差；
+\item SGBM：半全局的块匹配（Semi-Global Block Matching）算法，在对每个像素使用块匹配之后，利用Graph Cut算法进行全局优化，牺牲了一定的速度，但提高了匹配精度；
+\item GC：Graph Cut算法，全局优化算法，速度很慢，但精度很高。
+\end{enumerate}
+
+可以发现，立体匹配需要在速度和精度之间取舍，因此不同的算法适用于不同的场景
+
+\section{实验流程}
+\subsection{实验数据选取}
+从数据中选取同一场景的两个图片，如图\ref{Fig.1}，图片已经经过立体矫正，因此分别采取BM、SGBM、GC算法进行立体匹配，从而获取视差图。
+\begin{figure}[H]
+\centering  % 图片全局居中
+\subfigure[左视图]{
+\label{Fig.1.a}
+\includegraphics[width=0.45\textwidth]{image/im0.png}
+}
+\subfigure[右视图]{
+\label{Fig.1.b}
+\includegraphics[width=0.45\textwidth]{image/im1.png}
+}
+\caption{实验选取场景：artroom，2021 Mobile stereo datasets}
+\label{Fig.1}
+\end{figure}
+
+\subsection{实验结果}
+实验首先采用OpenCV库中的BM、SGBM算法分别进行立体匹配。BM和SGBM算法利用的是OpenCV-4.6.0版本的cv::StereoBM和cv::StereoSGBM类。由于涉及的参数较多，采用滑动条方式手动调节参数，如图\ref{Fig.2.a}。
+
+经过调节，效果较好的两组参数如表\ref{Table.1}和\ref{Table.2}。为了更好对比两种算法的好坏，大部分参数调节为相同。
+\begin{table}[H] % h为当前位置
+    % \setlength{\abovecaptionskip}{0cm} % 表标题上方间距
+    \setlength{\belowcaptionskip}{10pt} % 表标题下方间距
+    \caption{BM相关参数设置} % 标题位置
+    \centering % 表格整体居中
+    % tabular表示三线表，l\c\r表示单元格水平居中对齐，p{}m{}b{}表示单元格垂直居中对齐，中间可以插入分割线。
+    % 单元格要限制宽度，用p{宽度}表示，但此时左上对齐；
+    % 采用m{2cm}<{\centering}指令实现垂直居中、水平居中且自动换行
+    % 单元格对齐方式可采用\makecell[c]{内容}来表示
+        % [c]是水平居中，[l]水平左居中，[r]水平右居中；
+        % *[c]水平 + 垂直居中，*[l]垂直居中 + 水平左居中，*[r]垂直居中 + 水平右居中
+        % 内容\\换行可以直接换行
+    % \toprule[1pt]可以修改三线表的磅数
+    % \resizebox{\linewidth}{!}{ % 自适应长度，\linewidth表示文章宽度
+    \begin{threeparttable} % 用于添加注释
+    \begin{tabular}{m{100pt}<{\centering}m{70pt}<{\centering}m{200pt}}
+        \toprule[1.0pt]
+        \textbf{BM参数} & \makecell[c]{\textbf{设定值}} & \makecell[c]{\textbf{参数含义}}\\
+        \midrule[1.0pt]
+        preFilterCap & 32  & 预处理滤波器的判断阈值\\
+        \midrule
+        \textbf{blockSize}\tnote{1} & 15  & SAD窗口大小\\
+        \midrule
+        \textbf{minDisparity} & 0 & 最小视差 \\
+        \midrule
+        numDisparities & 240 & 最大视差值与最小视差值之差，必须是16的整数倍  \\
+        \midrule
+        textureThreshold & 1000 & 低纹理区域判断阈值，保证有足够的纹理以克服噪声  \\        
+        \midrule
+        \textbf{uniquenessRatio} & 1 & 视差唯一性百分比 \\
+        \midrule
+        speckleWindowSize & 100 & 检查视差连通区域变化度的窗口大小, 值为0时取消 speckle 检查  \\
+        \midrule
+        speckleRange & 32 & 视差变化阈值，当窗口内视差变化大于阈值时，该窗口内的视差清零 \\
+        \midrule
+        disp12MaxDiff & 1 & 左视差图（直接计算得出）和右视差图（通过cvValidateDisparity计算得出）,之间的最大容许差异，默认为-1 \\
+        \bottomrule[1.0pt]
+    \end{tabular}
+    % }
+    \begin{tablenotes} % 表格脚注
+        \footnotesize
+        \item[1] 加粗表示影响较大的参数，改变会对效果产生较大的影响，下同。  %此处加入注释*信息
+    \end{tablenotes}
+    \end{threeparttable} % 此行对应上方，用于添加注释
+    \label{Table.1}
+\end{table}
+
+\begin{table}[H] % h为当前位置
+    % \setlength{\abovecaptionskip}{0cm} % 表标题上方间距
+    \setlength{\belowcaptionskip}{10pt} % 表标题下方间距
+    \caption{SGBM相关参数设置} % 标题位置
+    \centering % 表格整体居中
+    % tabular表示三线表，l\c\r表示单元格水平居中对齐，p{}m{}b{}表示单元格垂直居中对齐，中间可以插入分割线。
+    % 单元格要限制宽度，用p{宽度}表示，但此时左上对齐；
+    % 采用m{2cm}<{\centering}指令实现垂直居中、水平居中且自动换行
+    % 单元格对齐方式可采用\makecell[c]{内容}来表示
+        % [c]是水平居中，[l]水平左居中，[r]水平右居中；
+        % *[c]水平 + 垂直居中，*[l]垂直居中 + 水平左居中，*[r]垂直居中 + 水平右居中
+        % 内容\\换行可以直接换行
+    % \toprule[1pt]可以修改三线表的磅数
+    % \resizebox{\linewidth}{!}{ % 自适应长度，\linewidth表示文章宽度
+    \begin{threeparttable} % 用于添加注释
+    \begin{tabular}{m{100pt}<{\centering}m{70pt}<{\centering}m{200pt}}
+        \toprule[1.0pt]
+        \textbf{BM参数} & \makecell[c]{\textbf{设定值}} & \makecell[c]{\textbf{参数含义}}\\
+        \midrule[1.0pt]
+        preFilterCap & 32  & 预处理滤波器的判断阈值\\
+        \midrule
+        \textbf{blockSize} & 5  & SAD窗口大小\\
+        \midrule
+        \textbf{minDisparity} & 0 & 最小视差 \\
+        \midrule
+        numDisparities & 240 & 最大视差值与最小视差值之差  \\
+        \midrule
+        P1 & 600 & 相邻像素视差增/减1时的惩罚系数  \\ 
+        \midrule
+        P2 & 2400 & 相邻像素视差变化值大于1时的惩罚系数  \\ 
+        \midrule
+        \textbf{uniquenessRatio} & 10 & 视差唯一性百分比 \\
+        \midrule
+        speckleWindowSize & 100 & 检查视差连通区域变化度的窗口大小  \\
+        \midrule
+        speckleRange & 32 & 视差变化阈值 \\
+        \midrule
+        disp12MaxDiff & 1 & 左右视差图之间的最大容许差异 \\
+        \bottomrule[1.0pt]
+    \end{tabular}
+    % }
+    % \begin{tablenotes} % 表格脚注
+    %     \footnotesize
+    %     \item[1] 加粗表示影响较大的参数，改变会对效果产生较大的影响，下同。  %此处加入注释*信息
+    % \end{tablenotes}
+    \end{threeparttable} % 此行对应上方，用于添加注释
+    \label{Table.2}
+\end{table}
+BM算法和SGBM算法立体匹配的结果如图\ref{Fig.2.b}和\ref{Fig.2.c}。对比可知，由于仅考虑了局部区域，BM算法生成的视差图噪点较多，效果相对较差；SGBM算法考虑了全局信息，生成的视差图较为平滑，但细节略差。
+
+\begin{figure}[H]
+\centering  % 图片全局居中
+\subfigure[滑动条动态调整参数界面]{
+\label{Fig.2.a}
+\includegraphics[width=0.45\textwidth]{image/trackBar.png}
+}
+\subfigure[BM算法立体匹配结果]{
+\label{Fig.2.b}
+\includegraphics[width=0.45\textwidth]{image/BM.png}
+}
+\subfigure[SGBM算法立体匹配结果]{
+\label{Fig.2.c}
+\includegraphics[width=0.45\textwidth]{image/SGBM.png}
+}
+\subfigure[Quasi算法立体匹配结果]{
+\label{Fig.2.d}
+\includegraphics[width=0.45\textwidth]{image/Quasi.png}
+}
+\caption{立体匹配实验结果}
+\label{Fig.2}
+\end{figure}
+由于OpenCV在3.x之后移除了GC算法，因此在OpenCV-4.6.0的stereo库中选取了QuasiDenseStereo类，尝试用于立体匹配。该算法由Stoyanov等人\cite{quasi}提出，旨在机器人辅助手术过程通过三维重建恢复组织结构和形态，该算法围绕一组候选特征匹配传播视差信息，尽可能避免镜面高光、仪器遮挡和视图依赖照明偏差等问题。
+
+实验结果如图\ref{Fig.2.d}，可以发现该算法在识别细小物体方面效果较好，但整体效果不如SGBM算法。
+
+\bibliographystyle{unsrt} % 设置参考文献格式，unsrt按照文献引用顺序来
+\bibliography{ref} % 引用bib文献库
+
+\section*{附录}
+\noindent{BM算法代码如下（C++）：}
+\begin{lstlisting}
+#include <iostream>
+#include <algorithm>
+// 核心库，包含一些cv常量
+#include <opencv2/core.hpp>
+// 标定重建工具箱
+#include <opencv2/calib3d.hpp>
+// 图像处理库
+#include <opencv2/imgproc.hpp>
+// 读写图片相关库
+#include <opencv2/imgcodecs.hpp>
+// 图像GUI
+#include <opencv2/highgui.hpp>
+
+int windowSize = 8; 
+int preFilterCap = 32;
+// int blockSize = 2 * windowSize - 1;
+int minDisparity = 0; // 最小视差，默认值为0
+int numDisparities = 240; // 最大视差值与最小视差值之差，必须是16的整数倍
+int textureThreshold = 1000; // 低纹理区域判断阈值，保证有足够的纹理以克服噪声 
+int uniquenessRatio = 1; // 视差唯一性百分比
+int speckleWindowSize = 100; // 检查视差连通区域变化度的窗口大小, 值为0时取消 speckle 检查  
+int speckleRange = 32; // 视差变化阈值，当窗口内视差变化大于阈值时，该窗口内的视差清零  
+int disp12MaxDiff = 1;                                                                   
+
+void getDisparity(const cv::Mat& imageLeft, const cv::Mat& imageRight, cv::Mat& disparity, cv::Mat& colorMap) {
+    cv::Ptr<cv::StereoBM> bm = cv::StereoBM::create();
+    bm->setPreFilterCap(preFilterCap); // 预处理滤波器的判断阈值
+    bm->setBlockSize(2 * windowSize - 1); // SAD窗口大小
+    // bm->setROI1();
+    bm->setMinDisparity(minDisparity); // 最小视差，默认值为0
+    bm->setNumDisparities(numDisparities); // 最大视差值与最小视差值之差，必须是16的整数倍
+    bm->setTextureThreshold(textureThreshold); // 低纹理区域判断阈值，保证有足够的纹理以克服噪声 
+    bm->setUniquenessRatio(uniquenessRatio); // 视差唯一性百分比
+    bm->setSpeckleWindowSize(speckleWindowSize); // 检查视差连通区域变化度的窗口大小, 值为0时取消 speckle 检查  
+    bm->setSpeckleRange(speckleRange); // 视差变化阈值，当窗口内视差变化大于阈值时，该窗口内的视差清零  
+    bm->setDisp12MaxDiff(disp12MaxDiff); //左视差图（直接计算得出）和右视差图（通过cvValidateDisparity计算得出）,之间的最大容许差异，默认为-1 
+
+    bm->compute(imageLeft, imageRight, disparity);
+    cv::Mat disparityGray, disparityRGB;
+    // 转换图像的存储格式（深度） 除以16转化为真实视差
+    disparity.convertTo(disparityGray, CV_32F, 1.0 / 16);
+    // 转化为8U类型
+    cv::Mat disp8U = cv::Mat(disparity.rows, disparity.cols, CV_8UC1);
+    // 归一化
+    cv::normalize(disparity, disp8U, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+    // 伪彩色图
+    // cv::Mat colorMap;
+    cv::applyColorMap(disp8U, colorMap, cv::COLORMAP_JET);
+}
+
+static void onChange(int pos, void* data) {
+    std::vector<cv::Mat> images = *((std::vector<cv::Mat>*)data);
+    cv::Mat disparity, colorMap;
+    getDisparity(images[0], images[1], disparity, colorMap);
+    cv::imshow("disparity", colorMap);
+}
+
+int main(int argc, char const *argv[])
+{
+    // 采用灰度图模式读取原始图
+    int colorMode = cv::IMREAD_GRAYSCALE;
+    cv::Mat imageLeft = cv::imread("../images/im0.png", colorMode);
+    cv::Mat imageRight = cv::imread("../images/im1.png", colorMode);
+    // std::cout << imageLeft.type() << std::endl;
+    cv::Mat disparity, colorMap;
+
+    // 根据初始参数获取视差图并保存
+    getDisparity(imageLeft, imageRight, disparity, colorMap);
+    // std::cout << disparity << std::endl;
+    cv::imwrite("../images/output/BM.png", colorMap);
+    cv::namedWindow("disparity", cv::WINDOW_NORMAL);
+    cv::resizeWindow("disparity", 960, 540);
+    cv::imshow("disparity", colorMap);
+
+    // 利用滑动条修改参数
+    std::vector<cv::Mat> images;
+    images.push_back(imageLeft);
+    images.push_back(imageRight);
+    cv::namedWindow("Track Bar");
+    cv::createTrackbar("preFilterCap", "Track Bar", &preFilterCap, 63, onChange, &images);
+    cv::createTrackbar("blockSize", "Track Bar", &windowSize, 50, onChange, &images);
+    // cv::createTrackbar("minDisparity", "Track Bar", &minDisparity, 100, onChange, &images);
+    // cv::createTrackbar("numDisparities", "Track Bar", &numDisparities, 100, onChange, &images);
+    cv::createTrackbar("textureThreshold", "Track Bar", &textureThreshold, 10000, onChange, &images);
+    cv::createTrackbar("speckleWindowSize", "Track Bar", &speckleWindowSize, 200, onChange, &images);
+    cv::createTrackbar("speckleRange", "Track Bar", &speckleRange, 100, onChange, &images);
+    cv::createTrackbar("uniquenessRatio", "Track Bar", &uniquenessRatio, 100, onChange, &images);
+    // cv::createTrackbar("disp12MaxDiff", "Track Bar", &disp12MaxDiff, 1000, onChange, &images);
+    // setTrackBar(imageLeft, imageRight);
+    cv::waitKey(0);
+    cv::destroyAllWindows();
+    return 0;
+}
+
+\end{lstlisting}
+SGBM算法代码如下：
+\begin{lstlisting}
+#include <iostream>
+#include <algorithm>
+// 核心库，包含一些cv常量
+#include <opencv2/core.hpp>
+// 标定重建工具箱
+#include <opencv2/calib3d.hpp>
+// 图像处理库
+#include <opencv2/imgproc.hpp>
+// 读写图片相关库
+#include <opencv2/imgcodecs.hpp>
+// 图像GUI
+#include <opencv2/highgui.hpp>
+
+void SGBM(const cv::Mat& imageL, const cv::Mat& imageR, cv::Mat& disp) {
+    cv::Mat grayImageL, grayImageR;
+    cv::cvtColor(imageL, grayImageL, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(imageR, grayImageR, cv::COLOR_BGR2GRAY);
+    // cv::namedWindow("ImageL", cv::WINDOW_NORMAL);
+    // cv::namedWindow("ImageR", cv::WINDOW_NORMAL);
+    // cv::imshow("ImageL", grayImageL);
+    // cv::imshow("ImageR", grayImageR);
+    cv::Ptr<cv::StereoSGBM> sgbm = cv::StereoSGBM::create(0, 16, 3);
+    int numberOfDisparities = ((imageL.size().width / 8) + 15)&(-16);
+    // std::cout << numberOfDisparities << std::endl;
+    int SADWindowSize = 5;
+    int sgbmWinSize = SADWindowSize > 0 ? SADWindowSize : 3;
+    int cn = imageL.channels();
+
+    sgbm->setPreFilterCap(32);
+    sgbm->setBlockSize(sgbmWinSize);
+    sgbm->setP1(8 * cn * sgbmWinSize * sgbmWinSize);
+    sgbm->setP2(32 * cn * sgbmWinSize * sgbmWinSize);
+    sgbm->setMinDisparity(0);
+    sgbm->setNumDisparities(numberOfDisparities);
+    sgbm->setUniquenessRatio(10);
+    sgbm->setSpeckleWindowSize(100);
+    sgbm->setSpeckleRange(32);
+    sgbm->setDisp12MaxDiff(1);
+    
+    sgbm->compute(grayImageL, grayImageR, disp);
+}
+
+int main(int argc, char const *argv[])
+{
+    cv::Mat rgbImageL = cv::imread("../images/im0.png", cv::IMREAD_COLOR);
+    cv::Mat rgbImageR = cv::imread("../images/im1.png", cv::IMREAD_COLOR);
+
+    cv::Mat disp;
+    // SGBM算法
+    SGBM(rgbImageL, rgbImageR, disp);
+
+    // 除以16得到真实的视差
+    disp.convertTo(disp, CV_32F, 1.0 / 16);
+    // 转化为8U类型
+    cv::Mat disp8U = cv::Mat(disp.rows, disp.cols, CV_8UC1);
+    // 归一化
+    cv::normalize(disp, disp8U, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+    // 伪彩色图
+    cv::Mat colorMap;
+    cv::applyColorMap(disp8U, colorMap, cv::COLORMAP_JET);
+    cv::imwrite("../images/output/SGBM.png", colorMap);
+    // cv::namedWindow("Disparity", cv::WINDOW_NORMAL);
+    // cv::imshow("Disparity", colorMap);
+    
+    cv::waitKey();
+    cv::destroyAllWindows();
+    return 0;
+}
+\end{lstlisting}
+Quasi算法代码如下：
+\begin{lstlisting}
+#include <iostream>
+#include <algorithm>
+// 核心库，包含一些cv常量
+#include <opencv2/core.hpp>
+// 标定重建工具箱
+#include <opencv2/calib3d.hpp>
+// 图像处理库
+#include <opencv2/imgproc.hpp>
+// 读写图片相关库
+#include <opencv2/imgcodecs.hpp>
+// 图像GUI
+#include <opencv2/highgui.hpp>
+
+#include <opencv2/stereo/quasi_dense_stereo.hpp>
+
+void quasi(const cv::Mat& imageL, const cv::Mat& imageR, cv::Mat& disp) {
+    cv::Mat grayImageL, grayImageR;
+	cv::cvtColor(imageL, grayImageL, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(imageR, grayImageR, cv::COLOR_BGR2GRAY);
+
+    // cv::namedWindow("ImageL", cv::WINDOW_NORMAL);
+    // cv::namedWindow("ImageR", cv::WINDOW_NORMAL);
+	// cv::imshow("ImageL", grayImageL);
+	// cv::imshow("ImageR", grayImageR);
+    cv::Ptr<cv::stereo::QuasiDenseStereo> quasi = cv::stereo::QuasiDenseStereo::create(grayImageL.size());
+    // 处理图片
+    quasi->process(grayImageL, grayImageR);
+    // // 得到视差图
+    // uint8_t displvl = 80;
+    // cv::Mat disp;
+    disp = quasi->getDisparity();
+}
+
+int main(int argc, char const *argv[])
+{
+    cv::Mat rgbImageL = cv::imread("../images/im0.png", cv::IMREAD_COLOR);
+	cv::Mat rgbImageR = cv::imread("../images/im1.png", cv::IMREAD_COLOR);
+
+    cv::Mat disp;
+    // SGBM算法
+    // SGBM(rgbImageL, rgbImageR, disp);
+    quasi(rgbImageL, rgbImageR, disp);
+
+    // 转化为8U类型
+    disp.convertTo(disp, CV_8U);
+    
+    // 伪彩色图
+    cv::Mat colorMap;
+    cv::applyColorMap(disp, colorMap, cv::COLORMAP_JET);
+    cv::imwrite("../images/output/Quasi.png", colorMap);
+    // cv::namedWindow("Disparity", cv::WINDOW_NORMAL);
+	// cv::imshow("Disparity", colorMap);
+    
+    cv::waitKey();
+    cv::destroyAllWindows();
+    return 0;
+}
+
+\end{lstlisting}
+\end{document}
